@@ -70,6 +70,7 @@ def print_keywords(keywords):
     """
     template = "{0: <12}{1}"
     print(template.format('Relevance', 'Keyword'))
+    print('--------------------------')
     for element in keywords:
         print(template.format(element[0], element[1]))
 
@@ -89,6 +90,7 @@ def main():
     keywords.sort(reverse=True)
 
     # Print to console
+    print('\nThe URL used for this assignment is:\n\n%s\n' % url)
     print_keywords(keywords[:10])
 
 
