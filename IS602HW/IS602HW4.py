@@ -41,7 +41,6 @@ class Webpage:
         return output
 
     def __extract_text(self):
-        from bs4 import BeautifulSoup
         soup = BeautifulSoup(self.html)
         # don't need contact info, so only need up to n-2 paragraphs
         p_text = soup.select('div[class="article_body"] > p')[:-2]
