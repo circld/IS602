@@ -168,11 +168,6 @@ def ls(y, x):
     return inner(XX_inv, Xy)
 
 
-a = ([1, 2, 3],
-     [2, 6, 3],
-     [1, 1, 1])
-b = ([1, 2, 3], )
-
 def main():
 
     # read in data
