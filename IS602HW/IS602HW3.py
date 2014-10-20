@@ -1,10 +1,5 @@
-# 1. load data from cars.data.csv (file path or file picker dialog box)
-# 2. Functions to:
-#   a) print top 10 rows sorted by 'safety' in descending order
-#   b) print bottom 15 rows, sorted by 'maint' in ascending order
-#   c) print all rows with 'high' or 'vhigh' in 'buying', 'maint', or 'safety' sorted by doors in asc order (use regex)
-#   d) save all rows to file where 'buying': 'vhigh', 'maint': 'med', 'doors': 4, 'persons': '4 or more'
-# 3. Code should handle exceptions
+# IS602 Week 3 Assignment
+# Paul Garaud
 
 import Tkinter, tkFileDialog
 import re

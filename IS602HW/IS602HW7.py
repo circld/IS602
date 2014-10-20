@@ -1,9 +1,31 @@
-# IS602 Week 5 Assignment - Ordinary Least Squares
+"""
+What we are doing here is very similar to homework 6, but now we'll look a
+bit at scipy.
+
+Do parts 1 and 2.  Part 3 is optional
+
+Take what you did on homework 5 as a starting point (using any of the provided
+datasets).  Replace the regression calculation using least squares with a curve
+fitting approach (examples in the reading).  To start, just fit a linear
+equation.  Output the equation to the console.  You don't need to graph
+anything (we'll look at that in a couple more weeks).
+Again, using timeit, compare the performance of your solution in homework 5 to
+the scipy function.  Output the results to the console.
+
+(Optional)  There are other models that can be fitted to the data we have.
+Try to fit other equations, like Gaussian, to the data.  Output the equation
+to the console.
+"""
+# IS602 Week 7 Assignment - SciPy
 # Paul Garaud
 
 import csv
+from timeit import timeit
+import numpy as np
+from scipy.optimize import curve_fit
 
 
+# Week 5 code
 def dim(a):
     """
     Calculates the dimensions of array; raises error if not valid matrix
@@ -48,7 +70,7 @@ def inner(a, b):
     # check if matrices are conformable
     if dim(a)[1] != dim(b)[0]:
         raise TypeError('These matrices %s %s and %s %s are not conformable.'
-        % ('a', dim(a), 'b', dim(b)))
+                        % ('a', dim(a), 'b', dim(b)))
 
     prod = ()
     for i in xrange(dim(a)[0]):
@@ -115,7 +137,7 @@ def cofactor(a):
     out = ()
     for row in xrange(n):
         out += (([(-1)**(row + col % 2) * cof[row][col]
-                      for col in xrange(k)]), )
+                  for col in xrange(k)]), )
     return out
 
 
@@ -168,38 +190,72 @@ def ls(y, x):
     return inner(XX_inv, Xy)
 
 
+# Week 7 code
+def linear(x, a, b):
+    return a * x + b
+
+
+def gaussian(x, a, mu, sigma):
+    return a * np.exp(-(x - mu)**2 / (2 * sigma**2))
+
+
 def main():
 
-    # read in data
-    variables = {'animal': (), 'brain': (), 'body': ()}
-    with open('Animals2.csv') as f:
-        csv_file = csv.reader(f, delimiter = ',')
-        for line in csv_file:
-            variables['animal'] += (line[0], )
-            variables['body'] += (line[1], )
-            variables['brain'] += (line[2], )
+    # calculate least squares beta coefficient using ls()
+    beta_old = ls(variables['body'], variables['brain'])
 
-    # remove header
-    for v in variables.keys():
-        variables[v] = variables[v][1:]
+    # calculate least squares beta coefficient using curve_fit()
+    # reshape to go from (65, 1) to (65,)
+    beta_new, vcov = curve_fit(linear, abrain, abody)
 
-    # convert brain & body elements to float
-    for v in ('brain', 'body'):
-        variables[v] = [(float(num), ) for num in variables[v]]
+    print('Week 5 model: bo = %.4f * br + %.4f' %
+          (beta_old[1][0], beta_old[0][0]))
 
-    # calculate least squares beta coefficient
-    beta = ls(variables['body'], variables['brain'])
-    print beta
+    print('SciPy model: bo = %.4f * br + %.4f\n' %
+          (beta_new[0], beta_new[1]))
 
-    # Checking results using Numpy
-    import numpy as np
-    y = np.array(variables['body'])
-    x = np.concatenate((np.ones((65, 1)), np.array(variables['brain'])), 1)
-    print np.dot(np.linalg.inv(np.dot(x.T, x)), np.dot(x.T, y))
+    imports = 'from __main__ import curve_fit, linear, abrain, abody, ' +  \
+                'brain, body, ls'
+    times = 1000
+    scipy_implementation = timeit('curve_fit(linear, abrain, abody)', setup=imports,
+                      number=times)
+    my_implementation = timeit('ls(body, brain)', setup=imports,
+                   number=times)
 
-    print('Final model: bo = %.4f * br + %.0f' %
-          (beta[1][0], beta[0][0]))
+    for result in ('my_implementation', 'scipy_implementation'):
+        print('Avg execution time for %s (%i reps):\n%s' %
+              (result, times, eval(result)))
+
+    print('\nGuassian:\nscaling var = %.4f\nmu = %.4f\nsigma = %.4f' %
+          tuple(curve_fit(gaussian, abrain, abody)[0]))
+
+# read in data
+variables = {'animal': (), 'brain': (), 'body': ()}
+with open('Animals2.csv') as f:
+    csv_file = csv.reader(f, delimiter = ',')
+    for line in csv_file:
+        variables['animal'] += (line[0], )
+        variables['body'] += (line[1], )
+        variables['brain'] += (line[2], )
+
+# remove header
+for v in variables.keys():
+    variables[v] = variables[v][1:]
+
+# convert brain & body elements to float
+for v in ('brain', 'body'):
+    variables[v] = [(float(num), ) for num in variables[v]]
+
+# timeit doesn't like dict variables
+brain = variables['brain']
+body = variables['body']
+
+# np.array for curve_fit
+abrain = np.array(variables['brain']).reshape(len(variables['brain']))
+abody = np.array(variables['body']).reshape(len(variables['body']))
+
 
 if __name__ == '__main__':
 
     main()
+

@@ -1,21 +1,3 @@
-# Do both of the following:
-#
-# Using your submission of homework 1 as a base, replace as many of the functions
-# as you can with numpy functions. For example, instead of using your sort
-# function that you wrote, use numpy.sort.  Refer to here for most of the
-# functions you'll need.
-# Using the timeit function, measure the execution times of all the sort and
-# search functions you have.  You'll most likely need to do a large number of
-# tests on each one to get a meaningful result.  Something like 10000 or more.
-# Your submission will be a single file that has all the functions from
-# homework 1 and the additional approach using numpy.  Additionally, you will
-# have the timing of all the functions output to the console. Something like.
-#
-# Sort using iteration:  x loops = y seconds
-# Sort using built in python: x' loops = y' seconds
-# Sort using numpy: x'' loops  = y''seconds
-# You fill in all the values for x and y.
-
 # IS602 Week 6 Assignment
 # Paul Garaud
 
