@@ -215,14 +215,16 @@ def main():
           (beta_new[0], beta_new[1]))
 
     imports = 'from __main__ import curve_fit, linear, abrain, abody, ' +  \
-                'brain, body, ls'
+                'brain, body, ls, gaussian'
     times = 1000
     scipy_implementation = timeit('curve_fit(linear, abrain, abody)', setup=imports,
                       number=times)
     my_implementation = timeit('ls(body, brain)', setup=imports,
                    number=times)
+    gaussian_implementation = timeit('curve_fit(gaussian, abrain, abody)', setup=imports,
+                                    number=times)
 
-    for result in ('my_implementation', 'scipy_implementation'):
+    for result in ('my_implementation', 'scipy_implementation', 'gaussian_implementation'):
         print('Avg execution time for %s (%i reps):\n%s' %
               (result, times, eval(result)))
 
