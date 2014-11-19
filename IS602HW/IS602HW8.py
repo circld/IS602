@@ -56,6 +56,7 @@ def main():
 
         # find centers
         centers = find_center(thresh, labelled, range(1, num_obj + 1))
+        print centers
 
         # plot
         plot_and_show(labelled, centers)
