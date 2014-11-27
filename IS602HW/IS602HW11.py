@@ -1,36 +1,5 @@
-# Perform a Monte Carlo simulation to calculate Value at Risk (VaR) for the
-# Apple stock price using the file attached to this lesson. There exist a
-# number of ways to do this type of analysis, but you can follow this basic
-# procedure (refer to this PDF (mc.pdf) for a more rigorous mathematical
-# overview):
-
-# 1. The file (apple.2011.csv) has 3 columns: date, price, and percent change.
-#    The information you are really interested in is the percent change.  This
-#    value is the percent change in the price from the previous date to the date
-#    on the corresponding row.
-# 2. Use the percent change values to create a Gaussian random number generator.
-#   This generator will create Gaussian-distributed randoms to use as
-#   hypothetical percent changes on the day to day price of Apple stock.
-# 3. With that generator, create 20 random numbers.  With these randoms, you can
-#   find a potential price change over 20 days.
-# 4. Start with the price from the last row and the random numbers to determine
-#   a hypothetical price after 20 days.  To do this, take that last price,
-#   apply a percent change and get a new price.  Then take that new price, and
-#   apply the next percent change.  Do this for the 20 randoms, and get a final
-#   price.
-# 5. Store the final price after 20 days (you can discard the intermediate price
-#   values).
-# 6. Repeat steps 3-5 a very large number of times.  Something like 10000.  Each
-#   run will yield a different result.
-# 7. Take all of the stored prices (10000 or so), sort them, and find the 1%
-#   lowest percentile.  This value is the final result, and represents the VaR
-#   with 99% confidence.  This means that the price will be above this result
-#   after 20 days with a confidence level of 99%.
-
-# The other requirement for this assignment is to use an IPython Notebook.
-# Include in the notebook all the code, the results, and any other
-# information you feel is needed (charts, graphs, plots, etc).  Rather than
-# submitting .py files, give me the .ipynb file for your notebook.
+# IS602 Week 11 Assignment
+# Paul Garaud
 
 import Tkinter, tkFileDialog
 import pandas as pd
